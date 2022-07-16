@@ -1,19 +1,21 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <form [formGroup]="signupForm">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div formGroupName="userData">
           <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" class="form-control" formControlName="username" />
-            <span *ngIf="!signupForm.get('userData.username').valid && signupForm.get('userData.username').touched" class="help-block">
+            <span *ngIf="!signupForm.get('userData.username').valid && signupForm.get('userData.username').touched"
+              class="help-block">
               please enter a valid user name
             </span>
           </div>
           <div class="form-group">
             <label for="email">email</label>
             <input type="text" id="email" class="form-control" formControlName="email" />
-            <span *ngIf="!signupForm.get('userData.email').valid && signupForm.get('userData.email').touched" class="help-block">
+            <span *ngIf="!signupForm.get('userData.email').valid && signupForm.get('userData.email').touched"
+              class="help-block">
               please enter a valid email
             </span>
           </div>
@@ -23,12 +25,48 @@
             <input type="radio" [value]="gender" formControlName="gender" />{{ gender }}
           </label>
         </div>
+
+        <div formArrayName="hobbies">
+          <h4>your hobbies</h4>
+
+          <button class="btn btn-default" type="button" (click)="onAddHobby()">add hobbies</button>
+
+          <div class="form-group" *ngFor="let hobbyControl of getControls(); let i = index">
+            <input type="text" class="form-control" [formControlName]="i">
+          </div>
+        </div>
         <span *ngIf="!signupForm.valid && signupForm.touched" class="help-block">
           please enter a valid data
         </span>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit" [disabled]="!signupForm.valid">Submit</button>
 
       </form>
     </div>
   </div>
 </div>
+<!-- Fixing a Bug
+In the next lecture, we'll add some code to access the controls of our form array:
+
+*ngFor="let hobbyControl of signupForm.get('hobbies').controls; let i = index"
+
+This code will fail as of the latest Angular version.
+
+You can fix it easily though. Outsource the "get the controls" logic into a method of your component code (the .ts file):
+
+getControls() {
+  return (<FormArray>this.signupForm.get('hobbies')).controls;
+}
+In the template, you can then use:
+
+*ngFor="let hobbyControl of getControls(); let i = index"
+
+Alternatively, you can set up a getter and use an alternative type casting syntax:
+
+get controls() {
+  return (this.signupForm.get('hobbies') as FormArray).controls;
+}
+and then in the template:
+
+*ngFor="let hobbyControl of controls; let i = index"
+
+This adjustment is required due to the way TS works and Angular parses your templates (it doesn't understand TS there). -->
