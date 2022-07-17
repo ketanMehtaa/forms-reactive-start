@@ -30,6 +30,17 @@ export class AppComponent implements OnInit {
     // this.signupForm.valueChanges.subscribe((value) => console.log(value));
     // the above line is for the latest code changes
     // this.signupForm.statusChanges.subscribe((status) => console.log(status));
+
+    // this.signupForm.setValue({})
+    // in set value u have to set every value in the form
+
+    // this.signupForm.patchValue({
+    //   userData: {
+    //     username:'ketan mehta'
+    //   }
+    // })
+    // in patch value you can set a single value in a form containing multiple values
+
   }
   // get controls() {
   //   return (this.signupForm.get('hobbies') as FormArray).controls;
@@ -43,6 +54,9 @@ export class AppComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.signupForm);
+    // this.signupForm.reset();
+    // above line is to reset the form
+    // we can also reset specific value of the form by passing object or something
   }
 
   forbiddenNames(control: FormControl): { [s: string]: boolean } {
