@@ -18,11 +18,18 @@ export class AppComponent implements OnInit {
           Validators.required,
           this.forbiddenNames.bind(this),
         ]),
-        email: new FormControl(null, [Validators.required, Validators.email],this.forbiddenEmails),
+        email: new FormControl(
+          null,
+          [Validators.required, Validators.email],
+          this.forbiddenEmails
+        ),
       }),
       gender: new FormControl("male"),
       hobbies: new FormArray([]),
     });
+    // this.signupForm.valueChanges.subscribe((value) => console.log(value));
+    // the above line is for the latest code changes
+    // this.signupForm.statusChanges.subscribe((status) => console.log(status));
   }
   // get controls() {
   //   return (this.signupForm.get('hobbies') as FormArray).controls;
@@ -48,15 +55,15 @@ export class AppComponent implements OnInit {
     return null;
   }
 
-  forbiddenEmails(control:FormControl): Promise<any> | Observable<any>{
-    const promise = new Promise<any>((resolve,reject) =>{
-      setTimeout (() =>{
-        if(control.value === 'test@test.com'){
-          resolve({'emailIsForbidden':true});
-        }else {
-          resolve (null);
+  forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (control.value === "test@test.com") {
+          resolve({ emailIsForbidden: true });
+        } else {
+          resolve(null);
         }
-      },2000);
+      }, 2000);
     });
     return promise;
   }
